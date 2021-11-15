@@ -1,0 +1,170 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'img/air5.png' %}"> 
+    <link rel="stylesheet" href="{% static 'css/flight.css' %}">  
+    <script data-require="jquery@3.1.1" data-semver="3.1.1" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <title>SKYAIRs</title>
+</head>
+<body>
+    <div class="bg" style="background-image: url('{% static 'img/air5.png' %}')"></div>
+    <div class="header">
+        <div class="s1"><h1 class="font1">SKYAIRs</h1></div>
+        <div class="s2 font"><h3><a href="flight.html">เที่ยวบิน</a></h3></div>
+        <div class="s2 font"><h3><a href="order.html">คำสั่งซื้อ</a></h3></div>
+        <div class="box1">
+            <button class ="button button1 font" style="width:150px;"><h2>Hello {{ user.username }}</h2></button>
+            <button class ="button button1_1 font" onclick="document.getElementById('id02').style.display='block'" style="width:150px;" action="logout" method="POST"><h3><a href="/" class="button1_1">Logout</a></h3></button>
+        </div>
+    </div>
+
+    <form action="{% url 'search' %}" method="post"> {% csrf_token %}
+    <div class="box"> 
+    <div class="tab-wrap font" >
+    <input type="radio" id="tab1" name="TripType" value="1" class="tab" checked>
+    <label for="tab1">เที่ยวเดียว</label>
+    <input type="radio" id="tab2" name="TripType" value="2" class="tab">
+    <label for="tab2">ไป-กลับ</label>
+    <div class="tab__content">
+        <div class="b1"> 
+            <div class="s3"><h3 class = "font2">สนามบินต้นทาง</h3>
+                <label class="dropdown">
+                    <select name="origin">
+                        <option>เลือกสนามบินต้นทาง</option>
+                        <option value="bkk">ท่าอากาศยานสุวรรณภูมิ(กรุงเทพมหานคร)</option>
+                        <option value="cnx">ท่าอากาศยานนานาชาติเชียงใหม่(เชียงใหม่)</option>
+                        <option value="hkt">ท่าอากาศยานภูเก็ต(เมืองภูเก็ต)</option>
+                        <option value="kkc">ท่าอากาศยานขอนแก่น(ขอนแก่น)</option>
+                        <option value="kbv">ท่าอากาศยานนานาชาติกระบี่(เมืองกระบี่)</option>
+                    </select>
+                </label>
+            </div>
+            <div class="s4"><h3 class = "font2">สนามบินปลายทาง</h3>
+                <label class="dropdown">
+                    <select name="destination">
+                        <option>เลือกสนามบินปลายทาง</option>
+                        <option value="bkk">ท่าอากาศยานสุวรรณภูมิ(กรุงเทพมหานคร)</option>
+                        <option value="cnx">ท่าอากาศยานนานาชาติเชียงใหม่(เชียงใหม่)</option>
+                        <option value="hkt">ท่าอากาศยานภูเก็ต(เมืองภูเก็ต)</option>
+                        <option value="kkc">ท่าอากาศยานขอนแก่น(ขอนแก่น)</option>
+                        <option value="kbv">ท่าอากาศยานนานาชาติกระบี่(เมืองกระบี่)</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+
+        <div class="b2">
+            <div class="s5"><h3 class = "font2">วันออกเดินทาง</h3></div>
+            <input type="date" name="depart_date1" style="
+            position: absolute;
+            top: 45px;
+            left: 10px;
+            width: 83%;
+            padding: 6px;
+            font-size: 14px;
+            text-align: center;">
+        </div> 
+        <div class="b2_1"> 
+            <div class="s6"><h3 class = "font2">วันเดินทางกลับ</h3></div> 
+            <input type="date" name="return_date" style="
+            position: absolute;
+            top: 45px;
+            left: 10px;
+            width: 83%;
+            padding: 6px;
+            font-size: 14px;
+            text-align: center;" disabled>
+            
+        </div>
+        <div class="b3"> 
+            <div class="s8"><h3 class = "font2">ชั้นโดยสาร</h3>
+                <label class="dropdown1">
+                    <select name="seatclass">
+                        <option>เลือกประเภทชั้นโดยสาร</option>
+                        <option value="economy">Economy class</option>
+                        <option value="first">First class</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="b3_3">
+            <input type="submit" class ="button button2 font" value="ค้นหาเที่ยวบิน">
+        </div>
+    </div>  
+    <div class="tab__content">
+        <div class="b1"> 
+            <div class="s3"><h3 class = "font2">สนามบินต้นทาง</h3>
+                <label class="dropdown">
+                    <select name="origin2">
+                        <option>เลือกสนามบินต้นทาง</option>
+                        <option value="bkk">ท่าอากาศยานสุวรรณภูมิ(กรุงเทพมหานคร)</option>
+                        <option value="cnx">ท่าอากาศยานนานาชาติเชียงใหม่(เชียงใหม่)</option>
+                        <option value="hkt">ท่าอากาศยานภูเก็ต(เมืองภูเก็ต)</option>
+                        <option value="kkc">ท่าอากาศยานขอนแก่น(ขอนแก่น)</option>
+                        <option value="kbv">ท่าอากาศยานนานาชาติกระบี่(เมืองกระบี่)</option>
+                    </select>
+                </label>
+            </div>
+            <div class="s4"><h3 class = "font2">สนามบินปลายทาง</h3>
+                <label class="dropdown">
+                    <select name="destination2">
+                        <option>เลือกสนามบินปลายทาง</option>
+                        <option value="bkk">ท่าอากาศยานสุวรรณภูมิ(กรุงเทพมหานคร)</option>
+                        <option value="cnx">ท่าอากาศยานนานาชาติเชียงใหม่(เชียงใหม่)</option>
+                        <option value="hkt">ท่าอากาศยานภูเก็ต(เมืองภูเก็ต)</option>
+                        <option value="kkc">ท่าอากาศยานขอนแก่น(ขอนแก่น)</option>
+                        <option value="kbv">ท่าอากาศยานนานาชาติกระบี่(เมืองกระบี่)</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+
+        <div class="b2">
+            <div class="s5"><h3 class = "font2">วันออกเดินทาง</h3></div>
+            <input type="date" name="depart_date2" style="
+            position: absolute;
+            top: 45px;
+            left: 10px;
+            width: 83%;
+            padding: 6px;
+            font-size: 14px;
+            text-align: center;">
+        </div> 
+        <div class="b2_2"> 
+            <div class="s6"><h3 class = "font2">วันเดินทางกลับ</h3></div>
+            <input type="date" name="return_date" style="
+            position: absolute;
+            top: 45px;
+            left: 10px;
+            width: 83%;
+            padding: 6px;
+            font-size: 14px;
+            text-align: center;">
+        </div>
+            
+        <div class="b3"> 
+            <div class="s8"><h3 class = "font2">ชั้นโดยสาร</h3>
+                <label class="dropdown1">
+                    <select name="seatclass2">
+                        <option>เลือกประเภทชั้นโดยสาร</option>
+                        <option value="economy">Economy class</option>
+                        <option value="first">First class</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="b3_3">
+            <input type="submit" class ="button button2 font" value="ค้นหาเที่ยวบิน">
+        </div>
+    </div> 
+    </div> 
+    </div>
+</form>
+</body>
+</html>

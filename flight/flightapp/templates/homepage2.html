@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+</head>
+<body>
+    
+    <h1>Hello Everyone.</h1>
+    <p>Have an account? <a href="login">Login here</a>.</p>
+    <p>Don't have an account? <a href="register">Create an account</a>.</p><br>
+    <a href="success">Access content page</a><br>
+    <a href="test_index">จองตั๋ว เที่ยวกัน</a><br>
+
+    <form action="{% url 'search' %}" method="post"> {% csrf_token %}
+        <input type="radio" name="TripType" value="1" checked>One-way
+        <input type="radio" name="TripType" value="2" checked>Round-trip
+        <div class="input-row">
+            <label class="dropdown">
+                From:
+                <select name="origin">
+                    <option>เลือกสนามบินต้นทาง</option>
+                    <option value="bkk">ท่าอากาศยานสุวรรณภูมิ(กรุงเทพมหานคร)</option>
+                    <option value="cnx">ท่าอากาศยานนานาชาติเชียงใหม่(เชียงใหม่)</option>
+                    <option value="hkt">ท่าอากาศยานภูเก็ต(เมืองภูเก็ต)</option>
+                    <option value="kkc">ท่าอากาศยานขอนแก่น(ขอนแก่น)</option>
+                    <option value="kbv">ท่าอากาศยานนานาชาติกระบี่(เมืองกระบี่)</option>
+                </select>
+            </label><br><br>
+            <label class="dropdown">
+                To:
+                <select name="destination">
+                    <option>เลือกสนามบินปลายทาง</option>
+                    <option value="bkk">ท่าอากาศยานสุวรรณภูมิ(กรุงเทพมหานคร)</option>
+                    <option value="cnx">ท่าอากาศยานนานาชาติเชียงใหม่(เชียงใหม่)</option>
+                    <option value="hkt">ท่าอากาศยานภูเก็ต(เมืองภูเก็ต)</option>
+                    <option value="kkc">ท่าอากาศยานขอนแก่น(ขอนแก่น)</option>
+                    <option value="kbv">ท่าอากาศยานนานาชาติกระบี่(เมืองกระบี่)</option>
+                </select>
+            </label><br>
+
+            <div class="input-row">
+                <label for="depart_date">
+                    Depart Date:
+                </label>
+                <input type="date" name="depart_date">
+            </div>
+            <div class="input-row">
+                <label for="depart_date">
+                    Return Date:
+                </label>
+                <input type="date" name="return_date">
+            </div>
+
+            <label for="seat_class">
+                Class:
+            </label>
+            <select name="seatclass">
+                <option value="economy">Economy</option>
+                <option value="first">First</option>
+            </select><br>
+            <button type="submit" class="btn btn-danger">Search Flight</button>
+    </form>
+</body>
+</html>

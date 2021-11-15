@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Flight Return</title>
+</head>
+<body>
+    <form action="{% url 'review2' %}" method="POST"> {% csrf_token %}
+        <div style="background-color: rgb(185, 0, 114);width: 800px;color: floralwhite;">
+            <p>คุณได้เลือกขาไป:</p>
+            {% for ticket1 in ticket1 %}
+            From: {{ticket1.origin.city_thai}} To: {{ticket1.destination.city_thai}}<br>
+            Flight number: {{ticket1.fnumber}}<br>
+            Airline: {{ticket1.airline}}<br>
+            Depart Date: {{ticket1.depart_date}} , Depart time: {{ticket1.depart_time}} <br>
+            Arrival time: {{ticket1.arrival_time}}<br>
+            Fare: {{ticket1.fare}} Bath<br>
+            Seat Class: {{ticket1.seat_class|capfirst}}
+            <input type="hidden" name="fnumber_depart_booked" value="{{ticket1.fnumber}}">
+            {% endfor %}
+        </div>
+        
+        <div style="background-color: darkslategray;width: 800px;color: floralwhite;">
+            <p>กรุณาเลือกขากลับ</p>
+            {% for ticket2 in ticket2 %}
+                    <h3>From: {{ticket2.origin.city_thai}} To: {{ticket2.destination.city_thai}}</h3>
+                    Flight number: {{ticket2.fnumber}}<br>
+                    Airline: {{ticket2.airline}}<br>
+                    Depart Date: {{ticket2.depart_date}} , Depart time: {{ticket2.depart_time}} <br>
+                    Arrival time: {{ticket2.arrival_time}}<br>
+                    Fare: {{ticket2.fare}} Bath<br>
+                    Seat Class: {{ticket2.seat_class|capfirst}}
+                        <div>
+                            <input type="hidden" name="origin_book2" value="{{ticket2.origin.city}}">
+                            <input type="hidden" name="destination_book2" value="{{ticket2.destination.city}}">
+                            <input type="hidden" name="flightnumber_book2" value="{{ticket2.fnumber}}">
+                            <input type="submit" name="book2" value="Book">
+                        </div>
+            </div>
+            {% endfor %}
+        </div>
+    </form>
+    <form action="{% url 'new_search' %}"> {% csrf_token %}
+        <input style="background-color: darkslategray;color: floralwhite;" type="submit" name="change_search" value="เปลี่ยนการค้นหา"></a>
+    <form>
+
+</body>
+</html>

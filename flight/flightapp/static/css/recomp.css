@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css?family=Prompt');
+@import url('//db.onlinewebfonts.com/c/bb25f84423b9515a1d475d02d2de6462?family=Bell+MT');
+.bg {
+    background-color: #D6DCE5;
+    height: 100%; 
+}
+a:link{
+    text-decoration: none;
+    color: #002060;
+}
+
+a:hover {
+    color: red; ;
+  }
+
+a.button1_1:link{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+a.button1_1:hover {
+    color: rgb(255, 255, 255); ;
+  }
+
+a.button2:link{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+a.button2:hover {
+    color: rgb(255, 255, 255); ;
+  }
+
+.font{
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Prompt", sans-serif;
+}
+
+.font1{
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Bell MT Semi Bold";
+    font-size:50px;
+    font-style: italic;
+}
+
+.font2{
+    font-weight: 100;
+    font-size:25px;
+    font-family: "Prompt"
+}
+
+.header {
+    background-color: #ffffff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 125px; 
+}
+
+.s1{
+    margin-top: 0px;
+    margin-left: 20px;
+    color: #002060;
+    display:inline-block
+}
+
+.s2 {
+    margin-left: 40px;
+    color: #002060;
+    display:inline-block;
+}
+
+.s3{
+    margin-top: -10px;
+    margin-left: 0px;
+    color: #002060;
+    display:inline-block
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.button{
+    border: none;
+    padding: 0px 20px;
+    cursor: pointer;
+    margin: 8px 0;
+    border-radius: 8px; 
+}
+
+.box1{
+  position: absolute;
+  left : 1200px;
+  right : 10px;
+  top : 30px;
+  width: fit-content;
+  height: 200px;
+}
+
+.button1 {
+    background-color: #002060;
+    color: white;
+}
+
+.button1:hover {
+    opacity: 0.8;
+}
+
+.button1_1 {
+  background-color: #940014;
+  color: white;
+}
+
+.button1_1:hover {
+  opacity: 0.8;
+}
+
+.button2 {
+    position: relative;
+    background-color: #002060;
+    color: white;
+    text-align: center;
+}
+
+.button2:hover {
+    opacity: 0.8;
+}
+
+.box {
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    top: 170;
+    left: 45;
+    right: 45;
+    height: 540px; 
+}
+
+
+.picture {
+    position: absolute;
+    width:100px; 
+    height:100px; 
+    background-image:url('comp.png');
+    margin: 20px;; 
+    padding: 20px;; 
+ }

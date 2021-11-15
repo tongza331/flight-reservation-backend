@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Flight</title>
+</head>
+<body>
+        <!--ถ้าผลการค้นหามีข้อมูล-->
+        {% if ticket.all or ticket1.all %}
+            <!--One-way-->
+            {% if trip_type == "1" %}
+            <h2>One-way:{{trip_type}}</h2>
+                {% for ticket in ticket %}
+                    <div style="background-color: darkslategray;width: 800px;color: floralwhite;">
+                        <h3>From: {{ticket.origin.city_thai}} To: {{ticket.destination.city_thai}}</h3>
+                        Flight number: {{ticket.fnumber}}<br>
+                        Airline: {{ticket.airline}}<br>
+                        Depart Date: {{ticket.depart_date}} , Depart time: {{ticket.depart_time}} <br>
+                        Arrival time: {{ticket.arrival_time}}<br>
+                        Fare: {{ticket.fare}} Bath<br>
+                        Seat Class: {{ticket.seat_class|capfirst}}
+                        <form action="{% url 'review' %}" method="POST"> {% csrf_token %}
+                            <div>
+                                <input type="hidden" name="origin_book" value="{{ticket.origin.code}}">
+                                <input type="hidden" name="destination_book" value="{{ticket.destination.code}}">
+                                <input type="hidden" name="flightnumber_book" value="{{ticket.fnumber}}">
+                                <input type="submit" name="book" value="Book">
+                            </div>
+                        </form>
+                    </div>
+                {% endfor %}
+                
+            
+            <!--Round-trip-->
+            {% elif trip_type == "2" %}
+            <h2>Round-trip:{{trip_type}}</h2>
+                <!--ขาไป-->
+                {% for ticket1 in ticket1 %}
+                    <div style="background-color: darkslategray;width: 800px;color: floralwhite;">
+                        <h2>กรุณาเลือกขาไป</h2>
+                        <h3>From: {{ticket1.origin.city_thai}} To: {{ticket1.destination.city_thai}}</h3>
+                        Flight number: {{ticket1.fnumber}}<br>
+                        Airline: {{ticket1.airline}}<br>
+                        Depart Date: {{ticket1.depart_date}} , Depart time: {{ticket1.depart_time}} <br>
+                        Arrival time: {{ticket1.arrival_time}}<br>
+                        Fare: {{ticket1.fare}} Bath<br>
+                        Seat Class: {{ticket1.seat_class|capfirst}}
+                        <form action="{% url 'review' %}" method="POST"> {% csrf_token %}
+                            <div>
+                                <input type="hidden" name="origin_book1" value="{{ticket1.origin.city}}">
+                                <input type="hidden" name="destination_book1" value="{{ticket1.destination.city}}">
+                                <input type="hidden" name="flightnumber_book1" value="{{ticket1.fnumber}}">
+                                <!--save value to search_return.html-->
+                                <input type="hidden" name="origin_book2" value="{{origin2}}">
+                                <input type="hidden" name="destination_book2" value="{{destination2}}">
+                                <input type="hidden" name="return_date_book2" value="{{return_date}}"> 
+                                <input type="hidden" name="seat_class_book2" value="{{ticket1.seat_class}}">
+                                <!--submit--> 
+                                <input type="submit" name="book1" value="Book">
+                            </div>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        <!--ถ้าผลการค้นหาไม่มีข้อมูล-->
+        {% else %}
+            <h3>No ticket you search.</h3>
+        {% endif %}
+            <form action="{% url 'new_search' %}"> {% csrf_token %}
+                <input style="background-color: darkslategray;color: floralwhite;" type="submit" name="change_search" value="เปลี่ยนการค้นหา"></a>
+            <form>
+    <!--เปลี่ยนการค้นหา flight-->
+        
+</body>
+</html>

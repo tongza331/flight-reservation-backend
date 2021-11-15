@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css?family=Prompt');
+@import url('//db.onlinewebfonts.com/c/bb25f84423b9515a1d475d02d2de6462?family=Bell+MT');
+.font{
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Prompt", sans-serif;
+}
+
+a:link{
+    text-decoration: none;
+    color: #002060;
+}
+
+a:hover {
+    color: red; ;
+  }
+
+a.button1_1:link{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+a.button1_1:hover {
+    color: rgb(255, 255, 255); ;
+  }
+
+a.button2:link{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+a.button2:hover {
+    color: rgb(255, 255, 255); ;
+  }
+
+.font1{
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Bell MT Semi Bold";
+    font-size:50px;
+    font-style: italic;
+}
+
+.font2{
+    font-weight: 100;
+    font-size:15px;
+    font-family: "Prompt"
+}
+
+.header {
+    background-color: #ffffff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 125px; 
+}
+
+.s1{
+    margin-top: 0px;
+    margin-left: 20px;
+    color: #002060;
+    display:inline-block
+}
+
+.s2 {
+    margin-left: 40px;
+    color: #002060;
+    display:inline-block;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+.bg {
+    background-color: #D6DCE5;
+    height: 100%; 
+}
+
+.button{
+    border: none;
+    padding: 0px 20px;
+    cursor: pointer;
+    margin: 8px 0;
+    border-radius: 8px; 
+}
+
+.box1{
+  position: absolute;
+  left : 1200px;
+  right : 10px;
+  top : 30px;
+  width: fit-content;
+  height: 200px;
+}
+
+.button1 {
+    background-color: #ffffff;
+    color: #002060;
+}
+
+.button1_1 {
+  background-color: #940014;
+  color: white;
+}
+
+.button1_1:hover {
+  opacity: 0.8;
+}
+
+.box2 {
+    background-color: #ffffff;
+    position: absolute;
+    top: 150px;
+    left: 25px;
+    width: 850px;
+    height: 250px;
+}
+
+hr { 
+    display: block;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    border-width: 2px;
+    border-color: #D6DCE5
+  } 
+
+.s3 {
+    margin: -10px 10px;
+    font-size: 15px;
+    color: #002060;
+    display:inline-block;
+}
+
+.box3 {
+    background-color: #ffffff;
+    position: absolute;
+    top: 425px;
+    left: 25px;
+    width: 850px;
+    height: 250px;
+}
+
+.box4 {
+    background-color: #ffffff;
+    position: absolute;
+    top: 150px;
+    left: 900px;
+    height: 250px;
+    right: 25px;
+}
+
+.button2 {
+    position: center;
+    margin-left: 20px;
+    margin-top: 0px;
+    margin-right: 20PX;
+    background-color: #002060;
+    color: white;
+}
+
+.button2:hover {
+    opacity: 0.8;
+}

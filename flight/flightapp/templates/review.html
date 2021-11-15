@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review booking</title>
+</head>
+<body>
+    <form action="" method="POST"> {% csrf_token %}
+        <!--One way-->
+        {% if trip_type == "1" %}
+            <div>
+                <h2>Ticket Details:</h2>
+                Trip Type: One-Way<br>
+                Flight Number: {{ticket_review.fnumber}}<br>
+                Origin: {{ticket_review.origin.city|capfirst}}<br>
+                Destination: {{ticket_review.destination.city_thai}}<br>
+                Depart Date: {{ticket_review.depart_date}}<br>
+                Depart Time: {{ticket_review.depart_time}}<br>
+                Arrival Time: {{ticket_review.arrival_time}}<br>
+                Fare: {{ticket_review.fare}} Bath<br>
+                Seat Class: {{ticket_review.seat_class|capfirst}}
+            </div>
+            <p>รวมราคา: {{ticket_review.fare}}</p>
+        <!--Round trip-->
+        {% else %}
+            <div>
+                <h2>Ticket Details:</h2>
+                <div style="background-color: dodgerblue; width: 800px;">
+                <p>คุณได้เลือกขาไป</p>
+                <h3>From: {{ticket1.origin.city_thai}} To: {{ticket1.destination.city_thai}}</h3>
+                    Flight number: {{ticket1.fnumber}}<br>
+                    Airline: {{ticket1.airline}}<br>
+                    Depart Date: {{ticket1.depart_date}} , Depart time: {{ticket1.depart_time}} <br>
+                    Arrival time: {{ticket1.arrival_time}}<br>
+                    Fare: {{ticket1.fare}} Bath<br>
+                    Seat Class: {{ticket1.seat_class|capfirst}}
+                </div>
+                <div style="background-color: indianred; width: 800px;">
+                    <p>คุณได้เลือกขากลับ</p>
+                    <h3>From: {{ticket2.origin.city_thai}} To: {{ticket2.destination.city_thai}}</h3>
+                        Flight number: {{ticket2.fnumber}}<br>
+                        Airline: {{ticket2.airline}}<br>
+                        Depart Date: {{ticket2.depart_date}} , Depart time: {{ticket2.depart_time}} <br>
+                        Arrival time: {{ticket2.arrival_time}}<br>
+                        Fare: {{ticket2.fare}} Bath<br>
+                        Seat Class: {{ticket2.seat_class|capfirst}}
+                    </div>
+            </div>
+                <p>รวมราคา: {{total_fare}}</p>
+        {% endif %}
+    </form>
+</body>
+</html>
