@@ -1,4 +1,4 @@
-# flight-reservation-backend2
+# flight-reservation-backend
 I and my teammates create basic web application to reservation for flight ticket. I make backend part for project CPE231.
 (Some part maybe included frontend for test something.)
 
