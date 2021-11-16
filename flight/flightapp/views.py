@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm 
 from django.core.validators import MinLengthValidator
 from django.views import View
+from django.db.models import Max
 from .models import *
 from datetime import datetime, timedelta
 import time
@@ -66,7 +67,6 @@ def login_request(request):
 			else:
 				messages.info(request, "Incorrect Password")
 				return render(request,'homepage.html',{'message4':"Incorrect Password."})
-			return redirect('homepage')
 	else:
 		return render(request,'homepage.html')
 
@@ -187,3 +187,100 @@ def review2(request):
 			'total_fare': ticket2.fare + ticket1.fare
 		}
 		return render(request,"review.html",content)
+
+def payment(request):
+	if request.method=="POST":
+		trip_type = request.POST['trip_type']
+
+		if trip_type == "1":
+			# if oneway 
+			onewayTicket = request.POST['onewayTicket'] # fid
+			total_fareOneway = request.POST['total_fareOneway']
+		
+		elif trip_type == "2":
+		# if round trip
+			GoTicket = request.POST['GoTicket'] # fid
+			ReturnTicket = request.POST['ReturnTicket'] #fid
+			total_fareRoundtrip = request.POST['total_fareRoundtrip']
+
+		email_contact = request.POST['email_contact']
+		phone_contact = request.POST['phone_contact']
+		username = request.POST['user']
+		fname = request.POST['fname']
+		lname = request.POST['lname']
+		gender = request.POST['gender']
+		
+		# Save passenger
+		Passenger.objects.create(
+			username=username,
+			first_name=fname,
+			last_name=lname,
+			gender=gender,
+		)
+		# Save contact information to user
+		user=User.objects.filter(username=username)
+		user.email = email_contact
+		user.phone = phone_contact
+		passenger=Passenger.objects.get(username=username)
+
+		# Save Schedules
+		if Schedule.objects.count() != 0:
+			ref_no_max = Schedule.objects.aggregate(Max('ref_no'))['ref_no__max']
+			next_ref_no = ref_no_max[0:2] + str(int(ref_no_max[2:])+1)
+		else:
+			next_ref_no = "RP1"
+		
+		if trip_type == "1":
+			ticket = Ticket.objects.get(fid=onewayTicket)
+			booked = Schedule.objects.create(
+				passenger=passenger,
+				user__username=username,
+				ref_no=next_ref_no,
+				flight__fid=ticket.fid,
+				flight_departdate =ticket.depart_date,
+				flight_returndate = None,
+				flight_fare = ticket.fare,
+				total_fare = total_fareOneway,
+				seat_class = ticket.seat_class,
+				booking_date = datetime.now(),
+				status = "Pending"
+			)
+			context = {
+				'booked':booked
+			}
+			
+		elif trip_type == "2":
+			ticket1 = Ticket.objects.get(fid=GoTicket)
+			ticket2 = Ticket.objects.get(fid=ReturnTicket)
+			print(ticket1)
+			despart_book = Schedule.objects.create(
+				passenger=Passenger.objects.filter(username=username),
+				user__username=username,
+				ref_no=next_ref_no,
+				flight__fid=ticket1.fid,
+				flight_departdate = ticket1.depart_date,
+				flight_returndate = ticket2.depart_date,
+				flight_fare = ticket1.fare,
+				total_fare = total_fareRoundtrip,
+				seat_class = ticket1.seat_class,
+				booking_date = datetime.now(),
+				status = "Pending"
+			)
+			return_book = Schedule.objects.create(
+				passenger=Passenger.objects.filter(username=username),
+				user__username=username,
+				ref_no=next_ref_no,
+				flight__fid=ticket2.fid,
+				flight_departdate = ticket1.depart_date,
+				flight_returndate = ticket2.depart_date,
+				flight_fare = ticket2.fare,
+				total_fare = total_fareRoundtrip,
+				seat_class = ticket2.seat_class,
+				booking_date = datetime.now(),
+				status = "Pending"
+			)
+			context1 = {
+				'despart_book':despart_book,
+				'return_book':return_book
+			}
+	return render(request,"payment.html")

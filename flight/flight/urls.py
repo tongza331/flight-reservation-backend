@@ -27,4 +27,5 @@ urlpatterns = [
     path("new/flight/search",views.new_search,name='new_search'),
     path("flight/review/one_way",views.review,name='review'),
     path("flight/review/round_trip",views.review2,name='review2'),
+    path("flight/PaymentMethod",views.payment,name="payment"),
 ]

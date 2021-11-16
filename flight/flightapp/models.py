@@ -21,7 +21,7 @@ GENDER = (
 class User(AbstractUser):
     phone = models.CharField(max_length=20)
     def __str__(self):
-        return f"{self.id}: {self.first_name} {self.last_name}"
+        return f"{self.id}: {self.username}"
 
 class Location(models.Model):
     city = models.CharField(max_length=64)
@@ -54,6 +54,7 @@ class Ticket(models.Model):
         return f"{self.fid}: {self.origin} to {self.destination}, {self.seat_class}"
 
 class Passenger(models.Model):
+    username = models.CharField(max_length=64, blank=True,null=True)
     first_name = models.CharField(max_length=64, blank=True)
     last_name = models.CharField(max_length=64, blank=True)
     gender = models.CharField(max_length=20, choices=GENDER, blank=True)
@@ -62,7 +63,7 @@ class Passenger(models.Model):
     class Meta:
         db_table = "passenger"
     def __str__(self):
-        return f"Passenger: {self.first_name} {self.last_name}, {self.gender}"
+        return f"{self.username} {self.first_name} {self.last_name}, {self.gender}"
 
 class Schedule(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="bookings", blank=True, null=True)

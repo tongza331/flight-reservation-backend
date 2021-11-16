@@ -1,13 +1,19 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    {% block script %}
+    <script src="{% static 'js/review.js' %}"></script>
+    {% endblock %}
     <title>Review booking</title>
 </head>
 <body>
-    <form action="" method="POST"> {% csrf_token %}
+    <form action="{% url 'payment' %}" method="POST"> {% csrf_token %}
         <!--One way-->
         {% if trip_type == "1" %}
             <div>
@@ -21,8 +27,11 @@
                 Arrival Time: {{ticket_review.arrival_time}}<br>
                 Fare: {{ticket_review.fare}} Bath<br>
                 Seat Class: {{ticket_review.seat_class|capfirst}}
+                <input type="hidden" name="onewayTicket" value="{{ticket_review.fid}}">
+                <input type="hidden" name="trip_type" value="1">
             </div>
             <p>รวมราคา: {{ticket_review.fare}}</p>
+            <input type="hidden" name="total_fareOneway" value="{{ticket_review.fare}}">
         <!--Round trip-->
         {% else %}
             <div>
@@ -36,6 +45,7 @@
                     Arrival time: {{ticket1.arrival_time}}<br>
                     Fare: {{ticket1.fare}} Bath<br>
                     Seat Class: {{ticket1.seat_class|capfirst}}
+                    <input type="hidden" name="GoTicket" value="{{ticket1.fid}}">
                 </div>
                 <div style="background-color: indianred; width: 800px;">
                     <p>คุณได้เลือกขากลับ</p>
@@ -46,10 +56,30 @@
                         Arrival time: {{ticket2.arrival_time}}<br>
                         Fare: {{ticket2.fare}} Bath<br>
                         Seat Class: {{ticket2.seat_class|capfirst}}
+                        <input type="hidden" name="ReturnTicket" value="{{ticket2.fid}}">
                     </div>
             </div>
                 <p>รวมราคา: {{total_fare}}</p>
+                <input type="hidden" name="trip_type" value="2">
+                <input type="hidden" name="total_fareRoundtrip" value="{{total_fare}}">
         {% endif %}
-    </form>
+        
+        <div>
+            <p>Contact Information</p>
+            <input type="text" name="email_contact" placeholder="Email"><br>
+            <input type="text" name="phone_contact" placeholder="Phone"><br><br>
+
+            <p>Passenger</p>
+                <input type="hidden" name='user' value="{{user.username}}">
+                First Name: <input type="text" name=fname placeholder="First Name">
+                Last Name: <input type="text" name=lname placeholder="Last Name">
+                Gender:
+                <select name="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+        <input name="confirm" type="submit" value="Add">
+    </form>   
 </body>
 </html>
