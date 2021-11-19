@@ -190,38 +190,39 @@ def review2(request):
 
 def payment(request):
 	if request.method=="POST":
-		trip_type = request.POST['trip_type']
+		trip_type = request.POST.get('trip_type')
 
 		if trip_type == "1":
 			# if oneway 
-			onewayTicket = request.POST['onewayTicket'] # fid
-			total_fareOneway = request.POST['total_fareOneway']
+			onewayTicket = request.POST.get('onewayTicket') # fid
+			total_fareOneway = request.POST.get('total_fareOneway')
 		
 		elif trip_type == "2":
 		# if round trip
-			GoTicket = request.POST['GoTicket'] # fid
-			ReturnTicket = request.POST['ReturnTicket'] #fid
-			total_fareRoundtrip = request.POST['total_fareRoundtrip']
+			GoTicket = request.POST.get('GoTicket') # fid
+			ReturnTicket = request.POST('ReturnTicket') #fid
+			total_fareRoundtrip = request.POST.get('total_fareRoundtrip')
 
-		email_contact = request.POST['email_contact']
-		phone_contact = request.POST['phone_contact']
-		username = request.POST['user']
-		fname = request.POST['fname']
-		lname = request.POST['lname']
-		gender = request.POST['gender']
+		email_contact = request.POST.get('email_contact')
+		phone_contact = request.POST.get('phone_contact')
+		username_book = request.POST.get('user')
+		fname = request.POST.get('fname')
+		lname = request.POST.get('lname')
+		gender = request.POST.get('gender')
 		
 		# Save passenger
 		Passenger.objects.create(
-			username=username,
+			username=username_book,
 			first_name=fname,
 			last_name=lname,
 			gender=gender,
 		)
+	
 		# Save contact information to user
-		user=User.objects.filter(username=username)
+		user=User.objects.get(username=username_book)
 		user.email = email_contact
 		user.phone = phone_contact
-		passenger=Passenger.objects.get(username=username)
+		user.save()
 
 		# Save Schedules
 		if Schedule.objects.count() != 0:
@@ -232,11 +233,10 @@ def payment(request):
 		
 		if trip_type == "1":
 			ticket = Ticket.objects.get(fid=onewayTicket)
-			booked = Schedule.objects.create(
-				passenger=passenger,
-				user__username=username,
+			schedule = Schedule.objects.create(
+				user_id = user.id,
+				flight_id = ticket.fid,
 				ref_no=next_ref_no,
-				flight__fid=ticket.fid,
 				flight_departdate =ticket.depart_date,
 				flight_returndate = None,
 				flight_fare = ticket.fare,
@@ -245,17 +245,20 @@ def payment(request):
 				booking_date = datetime.now(),
 				status = "Pending"
 			)
+			passenger=Passenger.objects.get(username=username_book)
+			schedule.passenger.add(passenger.id)
+			schedule.save()
 			context = {
-				'booked':booked
+				'schedule':schedule
 			}
+			return render(request,"order.html",context)
 			
 		elif trip_type == "2":
 			ticket1 = Ticket.objects.get(fid=GoTicket)
 			ticket2 = Ticket.objects.get(fid=ReturnTicket)
 			print(ticket1)
 			despart_book = Schedule.objects.create(
-				passenger=Passenger.objects.filter(username=username),
-				user__username=username,
+				user=user.username,
 				ref_no=next_ref_no,
 				flight__fid=ticket1.fid,
 				flight_departdate = ticket1.depart_date,
@@ -267,8 +270,7 @@ def payment(request):
 				status = "Pending"
 			)
 			return_book = Schedule.objects.create(
-				passenger=Passenger.objects.filter(username=username),
-				user__username=username,
+				user__username=username_book,
 				ref_no=next_ref_no,
 				flight__fid=ticket2.fid,
 				flight_departdate = ticket1.depart_date,
@@ -284,3 +286,6 @@ def payment(request):
 				'return_book':return_book
 			}
 	return render(request,"payment.html")
+
+def order(request):
+	return render(request,"order.html")

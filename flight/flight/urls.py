@@ -28,4 +28,5 @@ urlpatterns = [
     path("flight/review/one_way",views.review,name='review'),
     path("flight/review/round_trip",views.review2,name='review2'),
     path("flight/PaymentMethod",views.payment,name="payment"),
+    path("flight/orders",views.order,name="order"),
 ]

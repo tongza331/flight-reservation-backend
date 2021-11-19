@@ -11,8 +11,37 @@
     <script src="{% static 'js/review.js' %}"></script>
     {% endblock %}
     <title>Review booking</title>
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        
+        li {
+            float: left;
+        }
+        
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        
+        li a:hover {
+            background-color: #111;
+        }
+    </style>
 </head>
 <body>
+    <ul>
+        <li><a href="/new/flight/search">เที่ยวบิน</a></li>
+        <li><a href="/flight/orders">คำสั่งซื้อ</a></li>
+      </ul>
     <form action="{% url 'payment' %}" method="POST"> {% csrf_token %}
         <!--One way-->
         {% if trip_type == "1" %}
