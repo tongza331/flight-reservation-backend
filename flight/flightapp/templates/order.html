@@ -7,6 +7,21 @@
     <title>Your order</title>
 </head>
 <body>
-    hello order
+    <ul>
+        <li><a href="{% url 'new_search' %}">เที่ยวบิน</a></li>
+        <li><a href="{% url 'order' %}">คำสั่งซื้อ</a></li>
+      </ul>
+    hello order<br>
+    {{user.username}}<br>
+    {% for data in schedule %}
+        {{data.ref_no}}<br>
+        {{data.flight_id}}<br>
+        {{data.flight_departdate}}<br>
+        {{data.status}}<br>
+        <form action="{% url 'cancel' %}" method="POST"> {% csrf_token %}
+            <input type="hidden" name="ref_cancel" value="{{data.ref_no}}">
+            <input type="submit" value="Cancel">
+        </form>
+    {% endfor %}<br>
 </body>
 </html>

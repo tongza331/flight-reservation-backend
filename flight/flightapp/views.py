@@ -245,13 +245,13 @@ def payment(request):
 				booking_date = datetime.now(),
 				status = "Pending"
 			)
-			passenger=Passenger.objects.get(username=username_book)
+			passenger=Passenger.objects.get(username=username_book,first_name=fname,last_name=lname)
 			schedule.passenger.add(passenger.id)
 			schedule.save()
 			context = {
 				'schedule':schedule
 			}
-			return render(request,"order.html",context)
+			return render(request,"payment.html")
 			
 		elif trip_type == "2":
 			ticket1 = Ticket.objects.get(fid=GoTicket)
@@ -287,5 +287,22 @@ def payment(request):
 			}
 	return render(request,"payment.html")
 
+def get_confirm(request):
+	if request.method=="POST":
+		schedule=Schedule.objects.get(user=request.user)
+		schedule.status="Confirmed"
+		schedule.save()
+		return redirect(order)
+
 def order(request):
-	return render(request,"order.html")
+	if request.user.is_authenticated:
+		schedule=Schedule.objects.filter(user=request.user).order_by('-booking_date')
+		return render(request,"order.html",{'schedule':schedule})
+	
+def cancel(request):
+	if request.method=="POST":
+		ref_no = request.POST.get('ref_cancel')
+		schedule=Schedule.objects.get(user=request.user,ref_no=ref_no)
+		schedule.status="Cancelled"
+		schedule.save()
+		return redirect(order)

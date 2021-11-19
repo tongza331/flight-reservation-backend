@@ -39,8 +39,8 @@
 </head>
 <body>
     <ul>
-        <li><a href="/new/flight/search">เที่ยวบิน</a></li>
-        <li><a href="/flight/orders">คำสั่งซื้อ</a></li>
+        <li><a href="{% url 'new_search' %}">เที่ยวบิน</a></li>
+        <li><a href="{% url 'order' %}">คำสั่งซื้อ</a></li>
       </ul>
     <form action="{% url 'payment' %}" method="POST"> {% csrf_token %}
         <!--One way-->
