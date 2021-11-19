@@ -8,8 +8,8 @@
 </head>
 <body>
     <ul>
-        <li><a href="/new/flight/search">เที่ยวบิน</a></li>
-        <li><a href="/flight/orders">คำสั่งซื้อ</a></li>
+        <li><a href="{% url 'new_search' %}">เที่ยวบิน</a></li>
+        <li><a href="{% url 'order' %}">คำสั่งซื้อ</a></li>
       </ul>
     <form action="{% url 'get_confirm' %}" method="POST"> {% csrf_token %}
         <center>
@@ -21,7 +21,14 @@
                 Security Code: <input type="text" name="secureCode" style="width: 200; margin-left: auto;">
             </div>
         </center>
-        <input type="hidden" name="ref_no" value="{{schedule.ref_no}}">
+        
+        <input type="hidden" name="trip_type" value="{{trip_type}}">
+        {% if trip_type == "1" %}
+            <input type="hidden" name="ref_no" value="{{schedule.ref_no}}">
+        {% elif trip_type == "2" %}
+            <input type="hidden" name="ref_no1" value="{{despart_book.ref_no}}">
+            <input type="hidden" name="ref_no2" value="{{return_book.ref_no}}">
+        {% endif %}
         <input type="submit" name="status" value="Confirm">
     </form>
 </body>

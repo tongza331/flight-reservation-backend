@@ -1,15 +1,14 @@
 from django.contrib.auth.models import User,auth
-from django.http import request
+from django.http.response import HttpResponse
 from django.shortcuts import  render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm 
-from django.core.validators import MinLengthValidator
 from django.views import View
 from django.db.models import Max
 from .models import *
-from datetime import datetime, timedelta
-import time
+from datetime import datetime
+from django.views.decorators.csrf import csrf_exempt
+from flight.utils import render_to_pdf
 from .models import *
 
 # Create your views here.
@@ -77,6 +76,7 @@ def logout(request):
 		pass
 	return redirect('/')
 
+@csrf_exempt
 def search(request):
 	if request.method=="POST":
 		origin = request.POST['origin']
@@ -122,6 +122,7 @@ def search(request):
 				'destination':destination
 			})
 	return render(request,"search.html")
+
 
 def review(request):
 	# One-way
@@ -211,7 +212,7 @@ def payment(request):
 		gender = request.POST.get('gender')
 		
 		# Save passenger
-		Passenger.objects.create(
+		customer = Passenger.objects.create(
 			username=username_book,
 			first_name=fname,
 			last_name=lname,
@@ -224,7 +225,7 @@ def payment(request):
 		user.phone = phone_contact
 		user.save()
 
-		# Save Schedules
+		# Create auto ref_no
 		if Schedule.objects.count() != 0:
 			ref_no_max = Schedule.objects.aggregate(Max('ref_no'))['ref_no__max']
 			next_ref_no = ref_no_max[0:2] + str(int(ref_no_max[2:])+1)
@@ -245,12 +246,12 @@ def payment(request):
 				booking_date = datetime.now(),
 				status = "Pending"
 			)
-			passenger=Passenger.objects.get(first_name=fname,last_name=lname)
-			schedule.passenger.add(passenger.id)
+			schedule.passenger.add(customer)
 			schedule.save()
 			schedule=Schedule.objects.get(ref_no=next_ref_no)
 			context = {
-				'schedule':schedule
+				'schedule':schedule,
+				'trip_type':"1"
 			}
 			return render(request,"payment.html",context)
 			
@@ -259,7 +260,7 @@ def payment(request):
 			ticket2 = Ticket.objects.get(fid=ReturnTicket)
 			print(ticket1)
 			despart_book = Schedule.objects.create(
-				user=user.username,
+				user=user.id,
 				ref_no=next_ref_no,
 				flight__fid=ticket1.fid,
 				flight_departdate = ticket1.depart_date,
@@ -270,6 +271,14 @@ def payment(request):
 				booking_date = datetime.now(),
 				status = "Pending"
 			)
+
+			# Create auto ref_no for return flight
+			if Schedule.objects.count() != 0:
+				ref_no_max = Schedule.objects.aggregate(Max('ref_no'))['ref_no__max']
+				next_ref_no = ref_no_max[0:2] + str(int(ref_no_max[2:])+1)
+			else:
+				next_ref_no = "RP1"
+
 			return_book = Schedule.objects.create(
 				user__username=username_book,
 				ref_no=next_ref_no,
@@ -284,27 +293,64 @@ def payment(request):
 			)
 			context1 = {
 				'despart_book':despart_book,
-				'return_book':return_book
+				'return_book':return_book,
+				'trip_type':"2"
 			}
 	return render(request,"payment.html")
 
 def get_confirm(request):
 	if request.method=="POST":
-		ref_no = request.POST.get('ref_no')
-		schedule=Schedule.objects.get(ref_no=ref_no)
-		schedule.status="Confirmed"
-		schedule.save()
-		return redirect(order)
+		trip_type = request.POST.get('trip_type')
+		if trip_type == '1':
+			ref_no = request.POST.get('ref_no')
+			schedule=Schedule.objects.get(ref_no=ref_no)
+			schedule.status="Confirmed"
+			schedule.save()
+			return render(request,"payment_processing.html",{'schedule':schedule,
+			'trip_type':trip_type})
+
+		elif trip_type == '2':
+			ref_no1 = request.POST.get('ref_no1')
+			ref_no2 = request.POST.get('ref_no2')
+			schedule1=Schedule.objects.get(ref_no=ref_no1)
+			schedule1.status="Confirmed"
+			schedule1.save()
+
+			schedule2=Schedule.objects.get(ref_no=ref_no2)
+			schedule2.status="Confirmed"
+			schedule2.save()
+			return render(request,"payment_processing.html",{'schedule1':schedule1,
+			'schedule2':schedule2,
+			'trip_type':trip_type})
 
 def order(request):
 	if request.user.is_authenticated:
 		schedule=Schedule.objects.filter(user=request.user).order_by('-booking_date')
 		return render(request,"order.html",{'schedule':schedule})
-	
+
+@csrf_exempt
 def cancel(request):
 	if request.method=="POST":
 		ref_no = request.POST.get('ref_cancel')
-		schedule=Schedule.objects.get(user=request.user,ref_no=ref_no)
+		schedule=Schedule.objects.get(ref_no=ref_no)
 		schedule.status="Cancelled"
 		schedule.save()
 		return redirect(order)
+
+def resume_book(request):
+	if request.method=="POST":
+		ref_no = request.POST.get('ref_resume')
+		schedule=Schedule.objects.get(ref_no=ref_no)
+		schedule.status="Confirmed"
+		schedule.save()
+		return redirect(order)
+
+@csrf_exempt
+def get_ticket(request):
+    ref = request.GET.get("ref_print")
+    ticket1 = Schedule.objects.get(ref_no=ref)
+    data = {
+        'ticket1':ticket1
+    }
+    pdf = render_to_pdf('pdf.html', data)
+    return HttpResponse(pdf, content_type='application/pdf')

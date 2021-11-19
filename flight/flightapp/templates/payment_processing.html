@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Processing</title>
+</head>
+<body>
+    <center>
+        <img style="width: 100px;" src="{% static 'img/comp.png' %}" alt="processing">
+        <h3 style="color: darkgreen;">Congratulations, Your flight are booking confirmed.</h3>
+        {% if trip_type == "1" %}
+            Booking Ref: {{schedule.ref_no}} , ({{schedule.flight.origin.code}} -> {{schedule.flight.destination.code}})
+        {% elif trip_type == "2" %}
+            Booking Ref: {{schedule1.ref_no}} , ({{schedule1.flight.origin.code}} -> {{schedule1.flight.destination.code}})
+            Booking Ref: {{schedule2.ref_no}} , ({{schedule2.flight.origin.code}} -> {{schedule2.flight.destination.code}})
+        {% endif %}
+        <br><a href="{% url 'order' %}">กลับไปหน้าคำสั่งซื้อทั้งหมด</a></li>
+    </center>
+</body>
+</html>

@@ -58,8 +58,6 @@ class Passenger(models.Model):
     first_name = models.CharField(max_length=64, blank=True)
     last_name = models.CharField(max_length=64, blank=True)
     gender = models.CharField(max_length=20, choices=GENDER, blank=True)
-    #passenger = models.ForeignKey(User, on_delete=models.CASCADE, related_name="flights")
-    #flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name="passengers")
     class Meta:
         db_table = "passenger"
     def __str__(self):

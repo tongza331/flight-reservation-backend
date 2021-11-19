@@ -41,6 +41,7 @@
     <ul>
         <li><a href="{% url 'new_search' %}">เที่ยวบิน</a></li>
         <li><a href="{% url 'order' %}">คำสั่งซื้อ</a></li>
+        <li>{{user.username}}</li>
       </ul>
     <form action="{% url 'payment' %}" method="POST"> {% csrf_token %}
         <!--One way-->

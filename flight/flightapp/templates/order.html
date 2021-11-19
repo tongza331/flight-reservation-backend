@@ -12,23 +12,44 @@
         <li><a href="{% url 'order' %}">คำสั่งซื้อ</a></li>
       </ul>
     hello order<br>
-    {{user.username}}<br>
+    {{user.username}}<br><br>
+    
     {% for data in schedule %}
-        {{data.ref_no}}<br>
-        {{data.flight_id}}<br>
-        {{data.flight_departdate}}<br>
+        Origin: {{data.flight.origin.city|capfirst}}<br>
+        Destination: {{data.flight.destination.city|capfirst}}<br>
+        Ref_no: {{data.ref_no}}<br>
+        Flight Id: {{data.flight_id}}<br>
+        Flight Departdate: {{data.flight_departdate}}<br>
+        Passenger: {{data.passenger.count}}<br>
+        Booked on: {{data.booking_date}}<br>
         {% if data.status == "Confirmed" %}
             <div style="color: green;">{{data.status}}</div><br>
+            <!--ตรงนี้เดี๋ยวเปลี่นจาก Resume book เป็น Print ticket-->
+            <form action="{% url 'get_ticket' %}" method="GET"> {% csrf_token %}
+                <input type="hidden" name="ref_print" value="{{data.ref_no}}">
+                <input type="submit" value="Print Ticket">
+            </form>
+    
+            <form action="{% url 'cancel' %}" method="POST"> {% csrf_token %}
+                <input type="hidden" name="ref_cancel" value="{{data.ref_no}}">
+                <input type="submit" value="Cancel Book">
+            </form><br>
         {% elif data.status == "Pending" %}
             <div style="color: orange;">{{data.status}}</div><br>
+            <form action="{% url 'resume_book' %}" method="POST"> {% csrf_token %}
+                <input type="hidden" name="ref_resume" value="{{data.ref_no}}">
+                <input type="submit" value="Resume Book">
+            </form>
+    
+            <form action="{% url 'cancel' %}" method="POST"> {% csrf_token %}
+                <input type="hidden" name="ref_cancel" value="{{data.ref_no}}">
+                <input type="submit" value="Cancel Book">
+            </form><br>
         {% else %}
             <div style="color: red;">{{data.status}}</div><br>
         {% endif %}
-
-        <form action="{% url 'cancel' %}" method="POST"> {% csrf_token %}
-            <input type="hidden" name="ref_cancel" value="{{data.ref_no}}">
-            <input type="submit" value="Cancel">
-        </form>
+        
     {% endfor %}<br>
+
 </body>
 </html>
