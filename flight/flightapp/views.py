@@ -245,13 +245,14 @@ def payment(request):
 				booking_date = datetime.now(),
 				status = "Pending"
 			)
-			passenger=Passenger.objects.get(username=username_book,first_name=fname,last_name=lname)
+			passenger=Passenger.objects.get(first_name=fname,last_name=lname)
 			schedule.passenger.add(passenger.id)
 			schedule.save()
+			schedule=Schedule.objects.get(ref_no=next_ref_no)
 			context = {
 				'schedule':schedule
 			}
-			return render(request,"payment.html")
+			return render(request,"payment.html",context)
 			
 		elif trip_type == "2":
 			ticket1 = Ticket.objects.get(fid=GoTicket)
@@ -289,7 +290,8 @@ def payment(request):
 
 def get_confirm(request):
 	if request.method=="POST":
-		schedule=Schedule.objects.get(user=request.user)
+		ref_no = request.POST.get('ref_no')
+		schedule=Schedule.objects.get(ref_no=ref_no)
 		schedule.status="Confirmed"
 		schedule.save()
 		return redirect(order)
