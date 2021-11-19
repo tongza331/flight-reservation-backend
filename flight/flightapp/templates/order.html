@@ -17,7 +17,14 @@
         {{data.ref_no}}<br>
         {{data.flight_id}}<br>
         {{data.flight_departdate}}<br>
-        {{data.status}}<br>
+        {% if data.status == "Confirmed" %}
+            <div style="color: green;">{{data.status}}</div><br>
+        {% elif data.status == "Pending" %}
+            <div style="color: orange;">{{data.status}}</div><br>
+        {% else %}
+            <div style="color: red;">{{data.status}}</div><br>
+        {% endif %}
+
         <form action="{% url 'cancel' %}" method="POST"> {% csrf_token %}
             <input type="hidden" name="ref_cancel" value="{{data.ref_no}}">
             <input type="submit" value="Cancel">

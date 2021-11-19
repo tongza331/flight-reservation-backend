@@ -8,9 +8,9 @@ SEAT_CLASS = (
 )
 
 TICKET_STATUS =(
-    ('PENDING', 'Pending'),
-    ('CONFIRMED', 'Confirmed'),
-    ('CANCELLED', 'Cancelled')
+    ('Pending', 'Pending'),
+    ('Confirmed', 'Confirmed'),
+    ('Cancelled', 'Cancelled')
 )
 
 GENDER = (
