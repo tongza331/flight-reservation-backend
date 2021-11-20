@@ -9,6 +9,7 @@ from .models import *
 from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 from flight.utils import render_to_pdf
+from django import forms
 from .models import *
 
 # Create your views here.
@@ -366,3 +367,12 @@ def get_ticket(request):
     }
     pdf = render_to_pdf('pdf.html', data)
     return HttpResponse(pdf, content_type='application/pdf')
+
+class PassengerForm(forms.ModelForm):
+    class Meta:
+        model = Passenger
+        fields = '__all__'
+
+
+
+	

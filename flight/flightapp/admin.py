@@ -20,7 +20,7 @@ class TicketAdmin(admin.ModelAdmin):
 
 @admin.register(Passenger)
 class PassengerAdmin(admin.ModelAdmin):
-    list_display = ['username','first_name','last_name','gender']
+    list_display = ['first_name','last_name','gender']
 
 @admin.register(Schedule)
 class ScheduleAdmin(admin.ModelAdmin):

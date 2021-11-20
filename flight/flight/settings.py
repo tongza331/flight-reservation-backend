@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'flight.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'test231',
+        'NAME': 'system231',
         'USER': 'postgres',
         'PASSWORD': 'admin123',
         'HOST': 'localhost',

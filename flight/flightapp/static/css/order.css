@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css?family=Prompt');
+@import url('//db.onlinewebfonts.com/c/bb25f84423b9515a1d475d02d2de6462?family=Bell+MT');
+.font{
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Prompt", sans-serif;
+}
+
+.font1{
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Bell MT Semi Bold";
+    font-size:50px;
+    font-style: italic;
+}
+
+.header {
+    background-color: #ffffff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 125px; 
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.bg {
+    background-color: #D6DCE5;
+}
+
+.s1{
+    margin-top: 0px;
+    margin-left: 20px;
+    color: #002060;
+    display:inline-block
+}
+
+.s2 {
+    margin-left: 40px;
+    color: #002060;
+    display:inline-block;
+}
+
+.box1{
+    position: absolute;
+    left : 1200px;
+    right : 10px ;
+    top : 30px;
+    width: fit-content;
+    height: 200px;
+}
+
+a:link{
+    text-decoration: none;
+    color: #002060;
+}
+
+.button{
+    border: none;
+    padding: 0px 20px;
+    cursor: pointer;
+    margin: 8px 0;
+    border-radius: 8px; 
+}
+
+.button1 {
+    background-color: #ffffff;
+    color: #002060;
+}
+
+.button1_1 {
+    background-color: #940014;
+    color: white;
+}
+
+a.button1_1:link{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+a.button1_1:hover {
+    color: rgb(255, 255, 255); ;
+}
+
+.button2{
+    border: none;
+    float: right;
+    padding: 5px 20px;
+    margin-top: -104px;
+    margin-right: -288px;
+    cursor: pointer;
+    font-size: 22px;
+    width: 175px;
+    border-radius: 8px; 
+    background-color: #002060;
+    color: white;
+}
+
+.button3 {
+    border: none;
+    float: right;
+    padding: 5px 20px;
+    margin-top: -38px;
+    margin-right: -288px;
+    cursor: pointer;
+    font-size: 22px;
+    width: 175px;
+    border-radius: 8px; 
+    background-color: #940014;
+    color: white;
+}
+
+.blank{
+    margin-top: 111px;
+}
+.each-flight-div-box{
+    background-color: #ffffff;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.show{
+    display: block;
+}
+
+.each-flight-div{
+    justify-content: space-between;
+    padding: 15px 20px;
+}
+
+.flight-time-div{
+    max-width: 44%;
+}
+
+.flight-origin-time{
+    width: 44%;
+    margin-left: 12px;
+}
+
+.flight-place{
+    font-weight: bold;
+    font-size: 22px;
+    color: #002060;
+    margin-top: -7px;
+}
+
+.sym{
+    width: 40%;
+    margin-top: -32px;
+    margin-left: -104px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 22px;
+    color: #002060;
+}
+
+.flight-destination-time{
+    width: 40%;
+    margin-left: 261px;
+}
+
+.flight-place1{
+    display: flex;
+    flex: 1;
+    margin-top: -35px;
+    font-weight: bold;
+    font-size: 22px;
+    color: #002060;
+}
+
+.ref_no,.flight-num,.seat,.total{
+    width: 105%;
+    margin-left: -664px;
+}
+
+.ref{
+    display: flex;
+    flex: 1;
+    margin-top: -53px;
+    font-size: 18px;
+    color: #002060;
+}
+
+.flight-id,.seat-class,.totals{
+    display: flex;
+    flex: 1;
+    margin-top: 3px;
+    font-size: 18px;
+    color: #002060;
+}
+
+.order{
+    width: 40%;
+    justify-content: space-between;
+    margin-left: 472px;
+}
+
+.orders{
+    text-align: center;
+    margin-top: -34px;
+    font-weight: bold;
+    font-size: 22px;
+    color: #002060;
+}
+
+.day{
+    width: 40%;
+    margin-left: 204px;
+}
+
+.days{
+    display: flex;
+    flex: 1;
+    margin-top: 18px;
+    font-size: 18px;
+    color: #002060;
+}
+
+.status{
+    width: 40%;
+    margin-left: 204px;
+}
+
+.statuss{
+    font-size: 18px;
+    color: #002060;
+}
+
+.confirmed{
+    margin-top: -91px;
+    font-size: 18px;
+    color: green;
+    margin-left: 332px;
+}
+
+.cancelled{
+    margin-top: -27px;
+    font-size: 18px;
+    color: red;
+    margin-left: 332px;
+}
+
+.ref_no1,.flight-num1,.seat1,.total1{
+    width: 105%;
+    margin-left: -460px;
+}
+
+.ref1{
+    display: flex;
+    flex: 1;
+    margin-top: -79px;
+    font-size: 18px;
+    color: #002060;
+}
+
+.flight-id1,.seat-class1,.totals1{
+    display: flex;
+    flex: 1;
+    margin-top: 3px;
+    font-size: 18px;
+    color: #002060;
+}

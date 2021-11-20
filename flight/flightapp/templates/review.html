@@ -89,6 +89,7 @@
                         <input type="hidden" name="ReturnTicket" value="{{ticket2.fid}}">
                     </div>
             </div>
+            
                 <p>รวมราคา: {{total_fare}}</p>
                 <input type="hidden" name="trip_type" value="2">
                 <input type="hidden" name="total_fareRoundtrip" value="{{total_fare}}">
@@ -96,20 +97,25 @@
         
         <div>
             <p>Contact Information</p>
+            <input type="hidden" name='user' value="{{user.username}}">
             <input type="text" name="email_contact" placeholder="Email"><br>
             <input type="text" name="phone_contact" placeholder="Phone"><br><br>
+            <input name="confirm" type="submit" value="Buy">
+        </form> 
 
-            <p>Passenger</p>
-                <input type="hidden" name='user' value="{{user.username}}">
-                First Name: <input type="text" name=fname placeholder="First Name">
-                Last Name: <input type="text" name=lname placeholder="Last Name">
-                Gender:
-                <select name="gender">
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
-        <input name="confirm" type="submit" value="Add">
-    </form>   
+            <!-- <p>Passenger</p>
+                    
+                    First Name: <input type="text" name=fname placeholder="First Name">
+                    Last Name: <input type="text" name=lname placeholder="Last Name">
+                    Gender:
+                    <select name="gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                    <input name="confirm" type="submit" value="Add">   
+            </div> -->
+
+        
+      
 </body>
 </html>

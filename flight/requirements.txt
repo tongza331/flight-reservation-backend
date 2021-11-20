@@ -1,2 +1,2 @@
 Django
-xhtml2pdf
+--pre xhtml2pdf

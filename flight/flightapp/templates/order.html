@@ -5,52 +5,149 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your order</title>
+    <link rel="stylesheet" href="{% static 'css/order.css' %}">
+    <link rel="stylesheet" href="{% static 'js/script.js' %}">
+    <link rel="stylesheet" href="{% static 'css/daterangepicker.css' %}">
+    <script data-require="jquery@3.1.1" data-semver="3.1.1" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <title>SKYAIRs</title>
 </head>
 <body>
-    <ul>
-        <li><a href="{% url 'new_search' %}">เที่ยวบิน</a></li>
-        <li><a href="{% url 'order' %}">คำสั่งซื้อ</a></li>
-      </ul>
-    hello order<br>
-    {{user.username}}<br><br>
+
+    <div class="bg">
+        <div class="header">
+            <div class="s1"><h1 class="font1">SKYAIRs</h1></div>
+            <div class="s2 font"><h3><a href="/flight/searching">เที่ยวบิน</a></h3></div>
+            <div class="s2 font"><h3><a href="/flight/orders">คำสั่งซื้อ</a></h3></div>
+            <div class="box1">
+                <button class ="button button1 font" style="width:150px;"><h2>Hello {{ user.username }}</h2></button>
+                <button class ="button button1_1 font" onclick="document.getElementById('id02').style.display='block'" style="width:150px;" action="logout" method="POST"><h3><a href="/" class="button1_1">Logout</a></h3></button>
+            </div>  
+        </div>
+        <div class="blank"><div><br>
+        {% for data in schedule %}
+            <div class="each-flight-div-box show font">
+                <div class="each-flight-div">
+                    <div class="flight-time-div">
+                        <div class="flight-origin-time">
+                            <div class="flight-place">
+                                {{data.flight.origin.city|capfirst}}
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="sym"> > </div>
+                    
+                    <div class="flight-destination-time">
+                        <div class="flight-place1">
+                            {{data.flight.destination.city|capfirst}}
+                        </div>      
+                    </div>
+                    
+                    <div class="order">
+                        <div class="orders">
+                            รายการละเอียดคำสั่งซื้อ
+                        </div>
     
-    {% for data in schedule %}
-        Origin: {{data.flight.origin.city|capfirst}}<br>
-        Destination: {{data.flight.destination.city|capfirst}}<br>
-        Ref_no: {{data.ref_no}}<br>
-        Flight Id: {{data.flight_id}}<br>
-        Flight Departdate: {{data.flight_departdate}}<br>
-        Passenger: {{data.passenger.count}}<br>
-        Booked on: {{data.booking_date}}<br>
-        {% if data.status == "Confirmed" %}
-            <div style="color: green;">{{data.status}}</div><br>
-            <!--ตรงนี้เดี๋ยวเปลี่นจาก Resume book เป็น Print ticket-->
-            <form action="{% url 'get_ticket' %}" method="GET"> {% csrf_token %}
-                <input type="hidden" name="ref_print" value="{{data.ref_no}}">
-                <input type="submit" value="Print Ticket">
-            </form>
+                        <div class="day">
+                            <div class="days">
+                                วันที่จอง : {{data.flight_departdate}}
+                            </div>
+                        </div>
     
-            <form action="{% url 'cancel' %}" method="POST"> {% csrf_token %}
-                <input type="hidden" name="ref_cancel" value="{{data.ref_no}}">
-                <input type="submit" value="Cancel Book">
-            </form><br>
-        {% elif data.status == "Pending" %}
-            <div style="color: orange;">{{data.status}}</div><br>
-            <form action="{% url 'resume_book' %}" method="POST"> {% csrf_token %}
-                <input type="hidden" name="ref_resume" value="{{data.ref_no}}">
-                <input type="submit" value="Resume Book">
-            </form>
-    
-            <form action="{% url 'cancel' %}" method="POST"> {% csrf_token %}
-                <input type="hidden" name="ref_cancel" value="{{data.ref_no}}">
-                <input type="submit" value="Cancel Book">
-            </form><br>
-        {% else %}
-            <div style="color: red;">{{data.status}}</div><br>
-        {% endif %}
+                    {% if data.status == "Confirmed" %}
+                        <div class="status">
+                            <div class="statuss">
+                                สถานะการจอง : 
+                            </div>
+
+                            <div class="ref_no">
+                                <div class="ref">
+                                    REF NO : {{data.ref_no}}
+                                </div>
+                            </div>
+                        
+                            <div class="flight-num">
+                                <div class="flight-id">
+                                    FLIGHT NUMBER : {{data.flight_id}}
+                                </div>
+                            </div>
+                        
+                            <div class="seat">
+                                <div class="seat-class">
+                                    ชั้นโดยสาร : {{data.seat_class}}
+                                </div>
+                            </div>
         
-    {% endfor %}<br>
+                            <div class="total">
+                                <div class="totals">
+                                    จำนวนเงินที่ชำระ : {{data.total_fare}} บาท
+                                </div>
+                            </div>
+                        </div>
+                        <div class="confirmed font">{{data.status}}</div><br>
+                        <!--ตรงนี้เดี๋ยวเปลี่นจาก Resume book เป็น Print ticket-->
+                        <form action="{% url 'get_ticket' %}" method="GET"> {% csrf_token %}
+                            <input type="hidden" name="ref_print" value="{{data.ref_no}}">
+                            <input type="submit" class="button2 font" value="Print PDF">
+                        </form>
+                
+                        <form action="{% url 'cancel' %}" method="POST"> {% csrf_token %}
+                            <input type="hidden" name="ref_cancel" value="{{data.ref_no}}">
+                            <input type="submit" class="button3 font" value="Cancel">
+                        </form><br>
+                    {% elif data.status == "Pending" %}
+
+                        <div style="color: orange;">{{data.status}}</div><br>
+                        <form action="{% url 'resume_book' %}" method="POST"> {% csrf_token %}
+                            <input type="hidden" name="ref_resume" value="{{data.ref_no}}">
+                            <input type="submit" value="Resume Book">
+                        </form>
+                
+                        <form action="{% url 'cancel' %}" method="POST"> {% csrf_token %}
+                            <input type="hidden" name="ref_cancel" value="{{data.ref_no}}">
+                            <input type="submit" value="Cancel Book">
+                        </form><br>
+                    {% else %}
+                    <div class="status">
+                        <div class="statuss">
+                            สถานะการจอง : 
+                        </div>
+                    </div>
+                    <div class="cancelled font">{{data.status}}</div><br>
+                    <div class="ref_no1">
+                        <div class="ref1">
+                            REF NO : {{data.ref_no}}
+                        </div>
+                    </div>
+                
+                    <div class="flight-num1">
+                        <div class="flight-id1">
+                            FLIGHT NUMBER : {{data.flight_id}}
+                        </div>
+                    </div>
+                
+                    <div class="seat1">
+                        <div class="seat-class1">
+                            ชั้นโดยสาร : {{data.seat_class}}
+                        </div>
+                    </div>
+
+                    <div class="total1">
+                        <div class="totals1">
+                            จำนวนเงินที่ชำระ : {{data.total_fare}} บาท
+                        </div>
+                    </div>
+                    {% endif %}
+                    </div>
+                </div>
+
+
+            </div>
+        {% endfor %}
+    </div>
 
 </body>
 </html>
