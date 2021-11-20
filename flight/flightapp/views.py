@@ -167,7 +167,8 @@ def review(request):
 			'destination_book1':destination_book1,
 			'flightnumber_book1':flightnumber_book1,
 			'ticket2':ticket2,
-			'ticket1':ticket1
+			'ticket1':ticket1,
+			'trip_type':"2"
 		}
 		return render(request,"search_return.html",content2)
 	return render(request,"review.html")
@@ -185,7 +186,8 @@ def review2(request):
 		content = {
 			'ticket1': ticket1,
 			'ticket2': ticket2,
-			'total_fare': ticket2.fare + ticket1.fare
+			'total_fare': ticket2.fare + ticket1.fare,
+			'trip_type':"2"
 		}
 		return render(request,"review.html",content)
 
@@ -199,9 +201,9 @@ def payment(request):
 			total_fareOneway = request.POST.get('total_fareOneway')
 		
 		elif trip_type == "2":
-		# if round trip
+			# if round trip
 			GoTicket = request.POST.get('GoTicket') # fid
-			ReturnTicket = request.POST('ReturnTicket') #fid
+			ReturnTicket = request.POST.get('ReturnTicket') #fid
 			total_fareRoundtrip = request.POST.get('total_fareRoundtrip')
 
 		email_contact = request.POST.get('email_contact')
@@ -260,9 +262,9 @@ def payment(request):
 			ticket2 = Ticket.objects.get(fid=ReturnTicket)
 			print(ticket1)
 			despart_book = Schedule.objects.create(
-				user=user.id,
+				user_id = user.id,
 				ref_no=next_ref_no,
-				flight__fid=ticket1.fid,
+				flight_id=ticket1.fid,
 				flight_departdate = ticket1.depart_date,
 				flight_returndate = ticket2.depart_date,
 				flight_fare = ticket1.fare,
@@ -280,9 +282,9 @@ def payment(request):
 				next_ref_no = "RP1"
 
 			return_book = Schedule.objects.create(
-				user__username=username_book,
+				user_id=user.id,
 				ref_no=next_ref_no,
-				flight__fid=ticket2.fid,
+				flight_id=ticket2.fid,
 				flight_departdate = ticket1.depart_date,
 				flight_returndate = ticket2.depart_date,
 				flight_fare = ticket2.fare,
@@ -291,17 +293,23 @@ def payment(request):
 				booking_date = datetime.now(),
 				status = "Pending"
 			)
+			despart_book.passenger.add(customer)
+			despart_book.save()
+			return_book.passenger.add(customer)
+			return_book.save()
 			context1 = {
 				'despart_book':despart_book,
 				'return_book':return_book,
 				'trip_type':"2"
 			}
+			return render(request,"payment.html",context1)
 	return render(request,"payment.html")
 
 def get_confirm(request):
 	if request.method=="POST":
 		trip_type = request.POST.get('trip_type')
-		if trip_type == '1':
+		print(trip_type)
+		if trip_type == "1":
 			ref_no = request.POST.get('ref_no')
 			schedule=Schedule.objects.get(ref_no=ref_no)
 			schedule.status="Confirmed"
@@ -309,7 +317,7 @@ def get_confirm(request):
 			return render(request,"payment_processing.html",{'schedule':schedule,
 			'trip_type':trip_type})
 
-		elif trip_type == '2':
+		elif trip_type == "2":
 			ref_no1 = request.POST.get('ref_no1')
 			ref_no2 = request.POST.get('ref_no2')
 			schedule1=Schedule.objects.get(ref_no=ref_no1)
@@ -319,9 +327,12 @@ def get_confirm(request):
 			schedule2=Schedule.objects.get(ref_no=ref_no2)
 			schedule2.status="Confirmed"
 			schedule2.save()
+
 			return render(request,"payment_processing.html",{'schedule1':schedule1,
 			'schedule2':schedule2,
 			'trip_type':trip_type})
+	render(request,"payment_processing.html")
+	
 
 def order(request):
 	if request.user.is_authenticated:
@@ -339,7 +350,7 @@ def cancel(request):
 
 def resume_book(request):
 	if request.method=="POST":
-		ref_no = request.POST.get('ref_resume')
+		ref_no = request.POST.get('ref_resume')	
 		schedule=Schedule.objects.get(ref_no=ref_no)
 		schedule.status="Confirmed"
 		schedule.save()

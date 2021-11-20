@@ -14,7 +14,7 @@
         {% if trip_type == "1" %}
             Booking Ref: {{schedule.ref_no}} , ({{schedule.flight.origin.code}} -> {{schedule.flight.destination.code}})
         {% elif trip_type == "2" %}
-            Booking Ref: {{schedule1.ref_no}} , ({{schedule1.flight.origin.code}} -> {{schedule1.flight.destination.code}})
+            Booking Ref: {{schedule1.ref_no}} , ({{schedule1.flight.origin.code}} -> {{schedule1.flight.destination.code}})<br>
             Booking Ref: {{schedule2.ref_no}} , ({{schedule2.flight.origin.code}} -> {{schedule2.flight.destination.code}})
         {% endif %}
         <br><a href="{% url 'order' %}">กลับไปหน้าคำสั่งซื้อทั้งหมด</a></li>

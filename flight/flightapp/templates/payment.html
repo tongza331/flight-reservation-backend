@@ -22,13 +22,14 @@
             </div>
         </center>
         
-        <input type="hidden" name="trip_type" value="{{trip_type}}">
+        
         {% if trip_type == "1" %}
             <input type="hidden" name="ref_no" value="{{schedule.ref_no}}">
         {% elif trip_type == "2" %}
             <input type="hidden" name="ref_no1" value="{{despart_book.ref_no}}">
             <input type="hidden" name="ref_no2" value="{{return_book.ref_no}}">
         {% endif %}
+        <input type="hidden" name="trip_type" value="{{trip_type}}">
         <input type="submit" name="status" value="Confirm">
     </form>
 </body>
