@@ -65,7 +65,7 @@ class Passenger(models.Model):
 
 class Schedule(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="bookings", blank=True, null=True)
-    ref_no = models.CharField(max_length=6, unique=True)
+    ref_no = models.CharField(max_length=6,blank=True,null=True)
     passenger = models.ManyToManyField(Passenger, related_name="flight_tickets", blank=True)
     flight = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="tickets", blank=True, null=True)
     flight_departdate = models.DateField(blank=True, null=True)

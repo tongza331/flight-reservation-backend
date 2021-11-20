@@ -230,9 +230,9 @@ def payment(request):
 		# Create auto ref_no
 		if Schedule.objects.count() != 0:
 			ref_no_max = Schedule.objects.aggregate(Max('ref_no'))['ref_no__max']
-			next_ref_no = ref_no_max[0:2] + str(int(ref_no_max[2:])+1)
+			next_ref_no = ref_no_max[0:2] + str(int(ref_no_max[2:6])+1)
 		else:
-			next_ref_no = "RP1"
+			next_ref_no = "RP1000"
 		
 		if trip_type == "1":
 			ticket = Ticket.objects.get(fid=onewayTicket)
@@ -250,6 +250,7 @@ def payment(request):
 			)
 			schedule.passenger.add(customer)
 			schedule.save()
+			print(next_ref_no)
 			schedule=Schedule.objects.get(ref_no=next_ref_no)
 			context = {
 				'schedule':schedule,
@@ -277,9 +278,9 @@ def payment(request):
 			# Create auto ref_no for return flight
 			if Schedule.objects.count() != 0:
 				ref_no_max = Schedule.objects.aggregate(Max('ref_no'))['ref_no__max']
-				next_ref_no = ref_no_max[0:2] + str(int(ref_no_max[2:])+1)
+				next_ref_no = ref_no_max[0:2] + str(int(ref_no_max[2:6])+1)
 			else:
-				next_ref_no = "RP1"
+				next_ref_no = "RP1000"
 
 			return_book = Schedule.objects.create(
 				user_id=user.id,
